@@ -5,12 +5,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkService {
     private static NetworkService mInstance;
-    private static final String BASE_URL = "https://cat-fact.herokuapp.com/";
+
+    private static final String CAT_URL = "https://cat-fact.herokuapp.com/";
+
+    //Use demo address here like "https://my-json-server.typicode.com/<NAME>/<Repo Name>/"
+  private static final String DEMO_URL = "https://my-json-server.typicode.com/AShunevich/retrofitJSONTest/";
     private Retrofit mRetrofit;
 
     private NetworkService() {
         mRetrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(DEMO_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }

@@ -36,15 +36,6 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/numberFact"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{number}"
-            app:layout_constraintEnd_toEndOf="@+id/catFact"
-            app:layout_constraintTop_toTopOf="@+id/idOfFact"
-            tools:text="# 1" />
-
-        <TextView
             android:id="@+id/idOfFact"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

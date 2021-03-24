@@ -5,17 +5,16 @@ import com.google.gson.annotations.SerializedName;
 
 public class ItemJSON {
 
-    @SerializedName("text")
+   // @SerializedName("text")
+   @SerializedName("title")
     String textHolder;
-    @SerializedName("updatedAt")
+ //   @SerializedName("updatedAt")
+    @SerializedName("id")
     String factNumber;
 
     public ItemJSON(String factText, String factNumber) {
         this.textHolder = factText;
         this.factNumber = factNumber;
-    }
-    public ItemJSON(){
-
     }
 
     public String getFactText() {
