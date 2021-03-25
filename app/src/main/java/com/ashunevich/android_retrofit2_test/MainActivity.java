@@ -3,7 +3,6 @@ package com.ashunevich.android_retrofit2_test;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
-import android.widget.Toast;
 
 
 import com.ashunevich.android_retrofit2_test.databinding.ActivityMainBinding;
@@ -35,9 +34,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setRecyclerView();
 
-        binding.button.setOnClickListener(view ->getItem() );
-        binding.button2.setOnClickListener(view -> postItem());
-
+        binding.getButton.setOnClickListener(view ->getItem() );
+        binding.postButton.setOnClickListener(view -> postItem());
+        binding.patchButton.setOnClickListener(view -> patchItem());
+        binding.deleteButton.setOnClickListener(view -> deleteItem());
+        binding.putButton.setOnClickListener(view -> replacePost());
     }
 
     private void setRecyclerView() {
@@ -52,12 +53,14 @@ public class MainActivity extends AppCompatActivity {
              @Override
              public void onResponse(@NonNull Call<List<ItemJSON>> call, @NonNull Response<List<ItemJSON>> response) {
                  adapter.updateList(response.body());
+                 setStatus("OPERATION @GET " + "CALLBACK SUCCESSFUL");
                      Log.d("OPERATION @GET", "CALLBACK SUCCESSFUL");
 
              }
 
              @Override
              public void onFailure(@NonNull Call<List<ItemJSON>>call, @NonNull Throwable t) {
+                 setStatus("OPERATION @GET " + "CALLBACK FAILURE");
                  Log.d("OPERATION @GET", "CALLBACK FAILURE");
                  t.printStackTrace();
              }
@@ -65,26 +68,82 @@ public class MainActivity extends AppCompatActivity {
      }
 
      void postItem(){
-        NetworkService.getInstance().getJSONApi().newPost(itemJSON(returnStringFroMTextEdit(binding.id),returnStringFroMTextEdit(binding.textPost)))
+        NetworkService.getInstance().getJSONApi().newPost(itemJSON())
                 .enqueue(new Callback<ItemJSON>() {
             @Override
             public void onResponse(@NonNull Call<ItemJSON> call, @NonNull Response<ItemJSON> response) {
-                //since it's fake REST API it would only return callback status
+                //since it's fake REST API it would return callback
                 ItemJSON itemJSON = response.body();
                 ItemJSONList.add(itemJSON);
                 adapter.notifyItemInserted(adapter.getItemCount());
+                setStatus("OPERATION @POST " + "CALLBACK SUCCESSFUL");
                Log.d("OPERATION @POST","CALLBACK SUCCESSFUL");
             }
 
             @Override
             public void onFailure(@NonNull Call<ItemJSON> call, @NonNull Throwable t) {
+                setStatus("OPERATION @POST " + "CALLBACK FAILURE");
                 Log.d("OPERATION @POST","CALLBACK FAILURE");
             }
         });
     }
+    //PUT AND PATCH DOESN'T WORK PROPERLY SINCE I DON"T USE REAL API
+    void replacePost(){
+        NetworkService.getInstance().getJSONApi().putPost(returnStringFroMTextEdit(binding.id),itemJSON()).enqueue(new Callback<ItemJSON>() {
+            @Override
+            public void onResponse(@NonNull Call<ItemJSON> call,@NonNull Response<ItemJSON> response) {
+                //if it used as replace method than there should be method to delete old value and put new on the same place
+                //but here it used as alternative @POST method
+                //in case of use of Room / SQL  @Update logic can be used
+                setStatus("OPERATION  @PUT " + "CALLBACK SUCCESSFUL");
+                Log.d("OPERATION @PUT","CALLBACK SUCCESSFUL");
+            }
 
-     ItemJSON itemJSON(String id,String post){
-        return new ItemJSON(id,post);
+            @Override
+            public void onFailure(@NonNull Call<ItemJSON> call,@NonNull Throwable t) {
+                setStatus("OPERATION  @PUT " + "CALLBACK FAILURE");
+                Log.d("OPERATION  @PUT","CALLBACK FAILURE");
+            }
+        });
+    }
+
+
+    void deleteItem(){
+        NetworkService.getInstance().getJSONApi().deletePost(returnStringFroMTextEdit(binding.id)).enqueue(new Callback<ItemJSON>() {
+            @Override
+            public void onResponse(@NonNull Call<ItemJSON> call,@NonNull Response<ItemJSON> response) {
+                setStatus("OPERATION @DELETE " + "CALLBACK SUCCESSFUL");
+                Log.d("OPERATION @DELETE","CALLBACK SUCCESSFUL");
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ItemJSON> call,@NonNull Throwable t) {
+                setStatus("OPERATION @DELETE " + "CALLBACK FAILURE");
+                Log.d("OPERATION @DELETE","CALLBACK FAILURE");
+            }
+        });
+    }
+
+    //PUT AND PATCH DOESN'T WORK PROPERLY SINCE I DON"T USE REAL API
+    void patchItem(){
+        NetworkService.getInstance().getJSONApi().patchPost(returnStringFroMTextEdit(binding.id),itemJSON()).enqueue(new Callback<ItemJSON>() {
+            @Override
+            public void onResponse(@NonNull Call<ItemJSON> call,@NonNull Response<ItemJSON> response) {
+                setStatus("OPERATION @PATCH " + "CALLBACK SUCCESSFUL");
+                Log.d("OPERATION @PATCH","CALLBACK SUCCESSFUL");
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ItemJSON> call,@NonNull Throwable t) {
+                setStatus("OPERATION @PATCH " + "CALLBACK FAILURE");
+                Log.d("OPERATION @PATCH","CALLBACK FAILURE");
+            }
+        });
+    }
+
+
+     ItemJSON itemJSON(){
+        return new ItemJSON(returnStringFroMTextEdit(binding.textPost),returnStringFroMTextEdit(binding.id));
     }
 
      String returnStringFroMTextEdit(EditText text){
@@ -95,6 +154,10 @@ public class MainActivity extends AppCompatActivity {
         {
             return text.getText().toString();
         }
+    }
+
+    void setStatus(String string){
+        binding.operationStatus.setText(string);
     }
 
     // !========for cats========!
