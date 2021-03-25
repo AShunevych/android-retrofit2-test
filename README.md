@@ -1,4 +1,4 @@
 # android-retrofit2-test
 Sample of using Retrofit2 + Databinding + RecyclerView    
-   
- Retrofit2 only perform @GET operation from [Cat-Fact](https://cat-fact.herokuapp.com/#/) free API service
+  
+  This Retrofit2 demo perform @GET and @POST operation from [Demo Fake REST API](https://my-json-server.typicode.com/)
