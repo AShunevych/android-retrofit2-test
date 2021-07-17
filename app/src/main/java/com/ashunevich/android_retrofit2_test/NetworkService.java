@@ -10,7 +10,7 @@ public class NetworkService {
 
     //Use demo address here like "https://my-json-server.typicode.com/<NAME>/<Repo Name>/"
   private static final String DEMO_URL = "https://my-json-server.typicode.com/AShunevich/retrofitJSONTest/";
-    private Retrofit mRetrofit;
+    private final Retrofit mRetrofit;
 
     private NetworkService() {
         mRetrofit = new Retrofit.Builder()
