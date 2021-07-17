@@ -16,11 +16,13 @@ public class InteractorImpl implements Contractor.Interactor{
         NetworkService.getInstance().getJSONApi().getPost().enqueue(new Callback<List<ItemJSON>> () {
             @Override
             public void onResponse(@NonNull Call<List<ItemJSON>> call, @NonNull Response<List<ItemJSON>> response) {
+                Log.d("OPERATION @GET","CALLBACK SUCCESSFUL");
                 onGetPostsListener.onFinished (response.body ());
             }
 
             @Override
             public void onFailure(@NonNull Call<List<ItemJSON>>call, @NonNull Throwable t) {
+                Log.d("OPERATION @GET","CALLBACK FAILURE");
                 onGetPostsListener.onFailure (t);
             }
         });

@@ -50,8 +50,6 @@ public class RecyclerViewAdapter extends  RecyclerView.Adapter<RecyclerViewAdapt
         diffResult.dispatchUpdatesTo(this);
     }
 
-
-
     static class MyViewHolder extends RecyclerView.ViewHolder {
         final JsonItemBinding binding;
 
