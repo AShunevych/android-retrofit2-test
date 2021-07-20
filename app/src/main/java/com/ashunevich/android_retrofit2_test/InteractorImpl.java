@@ -17,13 +17,30 @@ public class InteractorImpl implements Contractor.Interactor{
             @Override
             public void onResponse(@NonNull Call<List<ItemJSON>> call, @NonNull Response<List<ItemJSON>> response) {
                 Log.d("OPERATION @GET","CALLBACK SUCCESSFUL");
-                onGetPostsListener.onFinished (response.body ());
+                onGetPostsListener.onSuccessGetPostCall (response.body ());
             }
 
             @Override
             public void onFailure(@NonNull Call<List<ItemJSON>>call, @NonNull Throwable t) {
                 Log.d("OPERATION @GET","CALLBACK FAILURE");
                 onGetPostsListener.onFailure (t);
+            }
+        });
+    }
+
+    @Override
+    public void getPostByID(onGetPostByIDListener onGetPostByIDListener, int id) {
+        NetworkService.getInstance().getJSONApi().getPostByID (id).enqueue (new Callback<ItemJSON> () {
+            @Override
+            public void onResponse(@NonNull Call<ItemJSON> call,@NonNull Response<ItemJSON> response) {
+                Log.d("OPERATION @getPostByID","CALLBACK SUCCESSFUL");
+                onGetPostByIDListener.onSuccessGetPostByID (response.body ());
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ItemJSON> call, @NonNull Throwable t) {
+                onGetPostByIDListener.onFailure (t);
+                Log.d("OPERATION @getPostByID","CALLBACK FAILURE");
             }
         });
     }
@@ -36,7 +53,7 @@ public class InteractorImpl implements Contractor.Interactor{
                     public void onResponse(@NonNull Call<ItemJSON> call, @NonNull Response<ItemJSON> response) {
                         //since it's fake REST API it would return callback
                         Log.d("OPERATION @POST","CALLBACK SUCCESSFUL");
-                        onNewPostListener.onFinished (response.body());
+                        onNewPostListener.onSuccessNewPostCall (response.body());
                     }
 
                     @Override
@@ -48,12 +65,12 @@ public class InteractorImpl implements Contractor.Interactor{
     }
 
     @Override
-    public void deletePost(onDeletePostListener onDeletePostListener, String id) {
+    public void deletePost(onDeletePostListener onDeletePostListener, int id) {
         NetworkService.getInstance().getJSONApi().deletePost(id).enqueue(new Callback<ItemJSON>() {
             @Override
             public void onResponse(@NonNull Call<ItemJSON> call,@NonNull Response<ItemJSON> response) {
                 assert response.body () != null;
-                onDeletePostListener.onFinished (response.body ().getFactText ());
+                onDeletePostListener.onSucessDeletePostCall (response.body ().getFactNumber ());
                 Log.d("OPERATION @DELETE","CALLBACK SUCCESSFUL");
             }
 
@@ -64,7 +81,7 @@ public class InteractorImpl implements Contractor.Interactor{
             }
         });
     }
-
+/*
     @Override
     public void patchPost(onPatchPostListener onPatchPostListener, String id, ItemJSON itemJSON) {
         NetworkService.getInstance().getJSONApi().patchPost(id,itemJSON).enqueue(new Callback<ItemJSON>() {
@@ -98,6 +115,6 @@ public class InteractorImpl implements Contractor.Interactor{
             }
         });
     }
-
+ */
 
 }

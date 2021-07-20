@@ -5,8 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkService {
     private static NetworkService mInstance;
-
-    private static final String CAT_URL = "https://cat-fact.herokuapp.com/";
+ //   private static final String CAT_URL = "https://cat-fact.herokuapp.com/";
 
     //Use demo address here like "https://my-json-server.typicode.com/<NAME>/<Repo Name>/"
   private static final String DEMO_URL = "https://my-json-server.typicode.com/AShunevych/retrofitJSONTest/";
@@ -26,7 +25,7 @@ public class NetworkService {
         return mInstance;
     }
 
-    public FactsPlaceholderAPI getJSONApi() {
-        return mRetrofit.create(FactsPlaceholderAPI.class);
+    public TestAPI getJSONApi() {
+        return mRetrofit.create(TestAPI.class);
     }
 }

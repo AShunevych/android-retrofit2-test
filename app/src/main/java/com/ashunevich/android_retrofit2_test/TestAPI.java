@@ -12,7 +12,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-public interface FactsPlaceholderAPI {
+public interface TestAPI {
 
     // !========for cats========!
     @GET("facts/random")
@@ -26,11 +26,14 @@ public interface FactsPlaceholderAPI {
     @GET("posts")
     Call<List<ItemJSON>> getPost();
 
+    @GET("posts/{id}")
+    Call<ItemJSON> getPostByID(@Path("id") int id);
+
     @POST("posts")
     Call<ItemJSON> newPost(@Body ItemJSON itemJSON);
 
     @DELETE("posts/{id}")
-    Call<ItemJSON> deletePost(@Path("id") String id);
+    Call<ItemJSON> deletePost(@Path("id") int id);
 
     @PUT("posts/{id}")
     Call<ItemJSON> putPost(@Path("id") String id, @Body ItemJSON itemJSON );

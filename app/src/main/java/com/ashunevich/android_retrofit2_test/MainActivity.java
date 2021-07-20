@@ -11,19 +11,15 @@ import com.ashunevich.android_retrofit2_test.databinding.ActivityMainBinding;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
 
 
 public class MainActivity extends AppCompatActivity implements Contractor.View {
 
     ActivityMainBinding binding;
-    private List<ItemJSON> ItemJSONList = new ArrayList<>();
-    private List<ItemJSON> lists =  new ArrayList<>();
+    private final List<ItemJSON> ItemJSONList = new ArrayList<>();
     private RecyclerViewAdapter adapter;
     private Contractor.Presenter presenter;
 
@@ -41,9 +37,9 @@ public class MainActivity extends AppCompatActivity implements Contractor.View {
         //PUT AND PATCH DOESN'T WORK PROPERLY SINCE I DON"T USE REAL API
         binding.getButton.setOnClickListener(view ->presenter.getPosts () );
         binding.postButton.setOnClickListener(view -> presenter.newPost (itemJSON ()));
-        binding.patchButton.setOnClickListener(view -> presenter.patchPost (binding.id.getText ().toString (),itemJSON ()));
-        binding.deleteButton.setOnClickListener(view -> presenter.deletePost (binding.id.getText ().toString ()));
-        binding.putButton.setOnClickListener(view -> presenter.putPost ("1",itemJSON ()));
+        binding.patchButton.setOnClickListener(view -> showToast("NOT WORKING"));
+        binding.deleteButton.setOnClickListener(view -> presenter.deletePost (returnId(binding.id)));
+        binding.putButton.setOnClickListener(view -> presenter.getPostById (returnId(binding.id)));
     }
 
     private void setRecyclerView() {
@@ -53,9 +49,24 @@ public class MainActivity extends AppCompatActivity implements Contractor.View {
         binding.recView.setAdapter(adapter);
     }
 
-     ItemJSON itemJSON(){
-        return new ItemJSON(returnStringFroMTextEdit(binding.textPost),returnStringFroMTextEdit(binding.id));
+    private void showToast(String text){
+        Toast.makeText (this,text,Toast.LENGTH_SHORT).show ();
     }
+
+     ItemJSON itemJSON(){
+        return new ItemJSON(returnStringFroMTextEdit(binding.textPost),returnId(binding.id));
+    }
+
+    int returnId(EditText text){
+        if(text.getText().toString().isEmpty()){
+            return 0;
+        }
+        else
+        {
+            return Integer.parseInt (text.getText ().toString ());
+        }
+    }
+
 
      String returnStringFroMTextEdit(EditText text){
         if(text.getText().toString().isEmpty()){
@@ -73,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements Contractor.View {
 
     // !========for cats========!
     //  use this methods  to get some real data for test
+    /*
      void getSingleFactResponse() {
         NetworkService.getInstance().getJSONApi().getFact().enqueue(new Callback<ItemJSON>() {
             @Override
@@ -109,6 +121,8 @@ public class MainActivity extends AppCompatActivity implements Contractor.View {
         });
     }
 
+     */
+
     @Override
     public void parseDataToRecyclerView(List<ItemJSON> listCall) {
         adapter.updateList(listCall);
@@ -121,8 +135,8 @@ public class MainActivity extends AppCompatActivity implements Contractor.View {
     }
 
     @Override
-    public void setResponseString(String s) {
-        setStatus(s);
+    public void setResponseString(int s) {
+        showToast("Deleted item id " + s);
     }
 
     @Override

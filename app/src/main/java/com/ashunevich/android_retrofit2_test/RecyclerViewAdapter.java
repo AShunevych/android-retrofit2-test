@@ -60,7 +60,7 @@ public class RecyclerViewAdapter extends  RecyclerView.Adapter<RecyclerViewAdapt
 
         public void bindItem(ItemJSON item){
             binding.setFactText(item.getFactText());
-            binding.setNumber(item.getFactNumber());
+            binding.setNumber(String.valueOf (item.getFactNumber()));
             binding.executePendingBindings();
         }
     }

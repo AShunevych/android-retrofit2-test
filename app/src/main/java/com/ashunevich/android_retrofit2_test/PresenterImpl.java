@@ -4,7 +4,7 @@ import java.util.List;
 
 public class PresenterImpl implements Contractor.Presenter, Contractor.Interactor.onGetPostsListener,
         Contractor.Interactor.onNewPostListener, Contractor.Interactor.onDeletePostListener,
-        Contractor.Interactor.onPatchPostListener, Contractor.Interactor.onPutPostListener {
+        Contractor.Interactor.onGetPostByIDListener {
 
     private final Contractor.View view;
     private final Contractor.Interactor interactor;
@@ -25,39 +25,33 @@ public class PresenterImpl implements Contractor.Presenter, Contractor.Interacto
     }
 
     @Override
-    public void putPost(String id, ItemJSON itemJSON) {
-        interactor.putPost (this,id,itemJSON);
+    public void getPostById(int id) {
+        interactor.getPostByID (this,id);
     }
 
     @Override
-    public void deletePost(String id) {
+    public void deletePost(int id) {
         interactor.deletePost (this,id);
     }
 
     @Override
-    public void patchPost(String id, ItemJSON itemJSON) {
-        interactor.patchPost (this,id,itemJSON);
-    }
-
-
-    @Override
-    public void onFinished(List<ItemJSON> listCall) {
+    public void onSuccessGetPostCall(List<ItemJSON> listCall) {
         view.parseDataToRecyclerView (listCall);
     }
 
     @Override
-    public void onFinished(ItemJSON item) {
+    public void onSuccessNewPostCall(ItemJSON item) {
         view.createJsonObject (item);
     }
 
     @Override
-    public void onFinished(String id) {
+    public void onSucessDeletePostCall(int id) {
         view.setResponseString (id);
     }
 
     @Override
-    public void onFinished(String id, ItemJSON itemJSON) {
-
+    public void onSuccessGetPostByID(ItemJSON json) {
+        view.createJsonObject (json);
     }
 
     @Override
