@@ -21,8 +21,7 @@ public class MainActivity extends AppCompatActivity implements Contractor.View {
     ActivityMainBinding binding;
     private final List<ItemJSON> ItemJSONList = new ArrayList<>();
     private RecyclerViewAdapter adapter;
-    private Contractor.Presenter presenter;
-
+    public Contractor.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,10 +75,6 @@ public class MainActivity extends AppCompatActivity implements Contractor.View {
         {
             return text.getText().toString();
         }
-    }
-
-    void setStatus(String string){
-        binding.operationStatus.setText(string);
     }
 
     // !========for cats========!
